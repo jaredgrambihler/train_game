@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Next Stop: 10</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Make 10 from four digits, in order, with + − × ÷ // % and ^. A Chicago “L” themed number puzzle.">
+<meta name="theme-color" content="#141518">
+<meta name="color-scheme" content="dark">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Next Stop 10">
+<link rel="stylesheet" href="css/style.css">
+<script type="module" src="js/app.js"></script>
+</head>
+<body>
+<!--APP-->
+<div class="app" id="app">
+  <header class="sign">
+    <div class="sign-row">
+      <div class="bullets" aria-hidden="true">
+        <i style="--c:#C60C30"></i><i style="--c:#00A1DE"></i><i style="--c:#62361B"></i><i style="--c:#009B3A"></i><i style="--c:#F9461C"></i><i style="--c:#E27EA6"></i><i style="--c:#522398"></i><i style="--c:#F9E300"></i>
+      </div>
+      <div class="sign-tools">
+        <button class="icon-btn" id="soundBtn" type="button" aria-label="Sound on" aria-pressed="true">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9h4l5-4v14l-5-4H4z"/><path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="mute" d="M16 9l5 6M21 9l-5 6"/></svg>
+        </button>
+        <button class="icon-btn" id="helpBtn" type="button" aria-label="How to play">?</button>
+      </div>
+    </div>
+    <h1 class="title"><span class="title-small">Next stop</span><span class="title-big">10</span></h1>
+  </header>
+
+  <div class="stripe">
+    <span class="stripe-line"><b id="lineName">Red</b> Line</span>
+    <span class="stripe-stop" id="stopCount">Stop 1 of 19</span>
+  </div>
+
+  <section class="track" aria-label="Your position on the line">
+    <div class="rail" aria-hidden="true"></div>
+    <div class="stations">
+      <div class="st st-prev"><i></i><span id="prevStop"></span></div>
+      <div class="st st-now"><i></i><span id="nowStop"></span></div>
+      <div class="st st-next"><i></i><span id="nextStop"></span></div>
+    </div>
+    <div class="train" id="train" aria-hidden="true">
+      <svg viewBox="0 0 132 34">
+        <rect x="2" y="4" width="62" height="22" rx="3" class="car"/>
+        <rect x="68" y="4" width="62" height="22" rx="3" class="car"/>
+        <path d="M118 4h8a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4h-8z" class="nose"/>
+        <rect x="2" y="17" width="62" height="3" class="band"/><rect x="68" y="17" width="62" height="3" class="band"/>
+        <g class="win"><rect x="7" y="8" width="9" height="6" rx="1"/><rect x="20" y="8" width="9" height="6" rx="1"/><rect x="37" y="8" width="9" height="6" rx="1"/><rect x="50" y="8" width="9" height="6" rx="1"/><rect x="73" y="8" width="9" height="6" rx="1"/><rect x="86" y="8" width="9" height="6" rx="1"/><rect x="103" y="8" width="9" height="6" rx="1"/><rect x="120" y="8" width="7" height="6" rx="1"/></g>
+        <g class="door"><rect x="30.5" y="7" width="5" height="17"/><rect x="96.5" y="7" width="5" height="17"/></g>
+        <g class="wheel"><circle cx="12" cy="28" r="3.2"/><circle cx="22" cy="28" r="3.2"/><circle cx="44" cy="28" r="3.2"/><circle cx="54" cy="28" r="3.2"/><circle cx="78" cy="28" r="3.2"/><circle cx="88" cy="28" r="3.2"/><circle cx="110" cy="28" r="3.2"/><circle cx="120" cy="28" r="3.2"/></g>
+      </svg>
+    </div>
+  </section>
+
+  <main class="play">
+    <section class="headsign" aria-labelledby="hsLabel">
+      <p class="hs-label" id="hsLabel">Make 10 with these digits, in order</p>
+      <div class="digits" id="digits"></div>
+    </section>
+
+    <section class="board" aria-label="Your answer">
+      <div class="led" id="expr" aria-live="polite"></div>
+      <div class="readout">
+        <span class="value" id="value"></span>
+        <span class="msg" id="msg" role="status"></span>
+      </div>
+    </section>
+
+    <section class="keypad" id="keypad" aria-label="Keypad">
+      <button type="button" class="key k-paren" data-tok="(">(</button>
+      <button type="button" class="key k-paren" data-tok=")">)</button>
+      <button type="button" class="key k-fn" data-act="back" aria-label="Delete">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h11v14H9l-6-7z M12.5 9.5l5 5M17.5 9.5l-5 5"/></svg>
+      </button>
+      <button type="button" class="key k-fn" data-act="clear">Clear</button>
+      <button type="button" class="key k-op" data-tok="+">+</button>
+      <button type="button" class="key k-op" data-tok="-" aria-label="Minus">−</button>
+      <button type="button" class="key k-op" data-tok="*" aria-label="Times">×</button>
+      <button type="button" class="key k-op" data-tok="/" aria-label="Divide">÷</button>
+      <button type="button" class="key k-op" data-tok="^" aria-label="Power"><span>x<sup>y</sup></span></button>
+      <button type="button" class="key k-op" data-tok="%" aria-label="Modulo">%</button>
+      <button type="button" class="key k-op" data-tok="//" aria-label="Floor divide">//</button>
+      <button type="button" class="key k-digit" data-act="digit" id="nextKey" aria-label="Next digit">2</button>
+    </section>
+
+    <section class="actions">
+      <button type="button" class="btn btn-quiet" id="revealBtn">Show route</button>
+      <button type="button" class="btn btn-go" id="checkBtn">Check</button>
+      <button type="button" class="btn btn-quiet" id="newBtn">New train</button>
+    </section>
+
+    <footer class="stats" aria-label="Your stats">
+      <span>Streak <b id="streak">0</b></span>
+      <span>Best <b id="best">0</b></span>
+      <span>Stops ridden <b id="rides">0</b></span>
+    </footer>
+  </main>
+</div>
+
+<dialog class="help" id="help" aria-labelledby="helpTitle">
+  <h2 id="helpTitle">How to ride</h2>
+  <p>You get four digits. Keep them in the order shown and add operators to make exactly <b>10</b>.</p>
+  <p class="example"><span>2 2 4 2</span> → 2 + 2 + 4 + 2 or 2 × 2 + 4 + 2<br><span>1 4 2 9</span> → 1 % 42 + 9</p>
+  <table>
+    <tr><th>+ − × ÷</th><td>add, subtract, multiply, divide</td></tr>
+    <tr><th>//</th><td>floor divide: 7 // 2 = 3</td></tr>
+    <tr><th>%</th><td>remainder: 7 % 3 = 1</td></tr>
+    <tr><th>x<sup>y</sup></th><td>power, typed ^ or **: 2^3 = 8</td></tr>
+    <tr><th>42</th><td>tap digits back to back to join them into one number (it can’t start with 0)</td></tr>
+    <tr><th>( ) and −</th><td>parentheses and a minus sign can go anywhere</td></tr>
+  </table>
+  <p>Math follows Python’s rules. Powers come first and stack right to left, so 2^3^2 is 2^9. A leading minus applies after the power, so −2^2 is −4; write (−2)^2 for 4.</p>
+  <p>Every puzzle has at least one answer. Each one you solve moves the train a stop down the line. <b>Show route</b> reveals an answer but resets your streak.</p>
+  <p class="kbd">On a keyboard: type digits and operators, Enter to check, Backspace to delete, Esc to clear.</p>
+  <form method="dialog"><button class="btn btn-go" type="submit">All aboard</button></form>
+</dialog>
+<!--/APP-->
+</body>
+</html>

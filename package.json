@@ -1,0 +1,6 @@
+{
+  "name": "next-stop-ten",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node tests/solver.test.js" }
+}
