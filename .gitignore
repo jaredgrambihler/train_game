@@ -1,3 +1,4 @@
-tests/out/
+tests/out
 node_modules/
 .DS_Store
+
