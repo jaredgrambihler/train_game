@@ -1,4 +1,4 @@
-# Next Stop: 10
+# Train Game
 
 A Chicago "L" themed number puzzle for phones and tablets, in portrait or
 landscape. You get four digits; keep them in order and add operators to make
@@ -30,18 +30,18 @@ on the GitHub Pages URL.
 ```bash
 git init
 git add .
-git commit -m "Next Stop: 10"
+git commit -m "Train Game"
 git branch -M main
-git remote add origin https://github.com/<you>/next-stop-ten.git
+git remote add origin https://github.com/<you>/train_game.git
 git push -u origin main
 ```
 
 Then on GitHub: **Settings → Pages → Build and deployment → Source: Deploy from
 a branch → Branch: `main`, folder `/ (root)` → Save.** After a minute it's live
-at `https://<you>.github.io/next-stop-ten/`. All paths are relative, so it works
+at `https://<you>.github.io/train_game/`. All paths are relative, so it works
 from that subfolder.
 
-**When you change files**, bump `VERSION` in `sw.js` (e.g. `nextstop10-v2`).
+**When you change files**, bump `VERSION` in `sw.js` (e.g. `traingame-v2`).
 Phones cache the game for offline play; the new version tells them to refresh.
 
 ## Add it to a phone

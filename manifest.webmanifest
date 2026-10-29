@@ -1,6 +1,6 @@
 {
-  "name": "Next Stop: 10",
-  "short_name": "Next Stop 10",
+  "name": "Train Game",
+  "short_name": "Train Game",
   "description": "Make 10 from four digits, in order. A Chicago “L” themed number puzzle.",
   "start_url": "./",
   "scope": "./",

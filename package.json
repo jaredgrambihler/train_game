@@ -1,5 +1,5 @@
 {
-  "name": "next-stop-ten",
+  "name": "train-game",
   "private": true,
   "type": "module",
   "scripts": { "test": "node tests/solver.test.js" }
