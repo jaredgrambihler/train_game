@@ -1,5 +1,6 @@
-/* Layout: one phone-height column that reads like a platform —
-   station sign, line stripe, track, train headsign, LED board, keypad. */
+/* Layout: reads like a platform — station sign, line stripe, track, train
+   headsign, LED board, keypad. One column in portrait; in landscape the sign
+   and stripe span the top, with the puzzle left and the keypad right. */
 :root {
   --bg: #0f1012;          /* platform night */
   --sign: #17181b;        /* station sign panel, slight cool bias */
@@ -16,6 +17,8 @@
   --on-line: #ffffff;
   --font-sign: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", system-ui, sans-serif;
   --font-led: ui-monospace, "SF Mono", Menlo, "Roboto Mono", "DejaVu Sans Mono", Consolas, monospace;
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
   color-scheme: dark;
 }
 
@@ -36,8 +39,10 @@ button:focus-visible { outline: 3px solid var(--led); outline-offset: 2px; }
   max-width: 480px;
   min-height: 100%;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto auto 1fr;
+  grid-template-areas: "sign" "stripe" "track" "puzzle" "controls";
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
   background: var(--bg);
@@ -45,16 +50,17 @@ button:focus-visible { outline: 3px solid var(--led); outline-offset: 2px; }
 
 /* ---------- station sign ---------- */
 .sign {
+  grid-area: sign;
+  display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 12px;
+  grid-template-areas: "bullets tools" "title title";
   background: var(--sign);
   padding-block: 12px 14px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-inline: var(--gutter-l) var(--gutter-r);
   border-bottom: 1px solid #000;
 }
-.sign-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.bullets { display: flex; gap: 5px; }
+.bullets { grid-area: bullets; display: flex; gap: 5px; }
 .bullets i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); display: block; }
-.sign-tools { display: flex; gap: 8px; }
+.sign-tools { grid-area: tools; display: flex; gap: 8px; }
 .icon-btn {
   width: 34px; height: 34px; border-radius: 50%;
   border: 1.5px solid var(--rule); background: transparent;
@@ -69,6 +75,7 @@ button:focus-visible { outline: 3px solid var(--led); outline-offset: 2px; }
 .icon-btn[aria-pressed="false"] .mute { display: inline; }
 
 .title {
+  grid-area: title;
   margin: 10px 0 0;
   display: flex; align-items: center; gap: 12px;
   font-weight: 700; letter-spacing: -0.01em; line-height: 1;
@@ -84,21 +91,35 @@ button:focus-visible { outline: 3px solid var(--led); outline-offset: 2px; }
 
 /* ---------- line stripe ---------- */
 .stripe {
+  grid-area: stripe;
   display: flex; justify-content: space-between; align-items: center; gap: 12px;
   background: var(--line); color: var(--on-line);
-  padding-block: 8px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 6px;
+  padding-inline: var(--gutter-l) var(--gutter-r);
   font-size: 15px; transition: background-color .4s ease, color .4s ease;
 }
-.stripe-line b { font-weight: 700; }
+.line-pick { position: relative; display: inline-flex; align-items: center; margin-left: -10px; }
+.line-pick select {
+  appearance: none; -webkit-appearance: none;
+  border: 0; border-radius: 999px; padding: 4px 30px 4px 10px;
+  background: color-mix(in srgb, currentColor 16%, transparent); color: inherit;
+  font: inherit; font-size: 16px; font-weight: 700; cursor: pointer;  /* 16px stops iOS zooming on focus */
+}
+.line-pick select:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.line-pick select:disabled { cursor: default; }
+.line-pick option { background: var(--panel); color: var(--ink); }
+.line-pick svg {
+  position: absolute; right: 11px; width: 11px; height: 8px; pointer-events: none;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
 .stripe-stop { font-variant-numeric: tabular-nums; opacity: .9; }
 
 /* ---------- track ---------- */
 .track {
+  grid-area: track;
   position: relative;
   height: 84px;
-  margin-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px));
+  margin-inline: var(--gutter-l) var(--gutter-r);
   overflow: hidden;
 }
 .rail {
@@ -133,13 +154,12 @@ button:focus-visible { outline: 3px solid var(--led); outline-offset: 2px; }
 .train .wheel circle { fill: #2a2c31; stroke: #0f1012; stroke-width: 1; }
 
 /* ---------- play area ---------- */
-.play {
-  flex: 1;
+.puzzle, .controls {
   display: flex; flex-direction: column; gap: 12px;
-  padding-block: 4px 12px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-inline: var(--gutter-l) var(--gutter-r);
 }
+.puzzle { grid-area: puzzle; padding-top: 4px; }
+.controls { grid-area: controls; padding-block: 12px; }
 
 .headsign { display: flex; flex-direction: column; gap: 8px; }
 .hs-label { margin: 0; font-size: 13px; color: var(--muted); letter-spacing: .02em; }
@@ -223,7 +243,7 @@ button:focus-visible { outline: 3px solid var(--led); outline-offset: 2px; }
 
 /* ---------- help dialog ---------- */
 .help {
-  width: min(440px, calc(100% - 32px)); max-height: calc(100% - 48px);
+  width: min(440px, calc(100% - 32px)); max-height: calc(100% - 48px); overflow-y: auto;
   background: var(--panel); color: var(--ink);
   border: 1px solid var(--rule); border-radius: 16px; padding: 20px;
   font-size: 15px; line-height: 1.5;
@@ -257,5 +277,39 @@ button:focus-visible { outline: 3px solid var(--led); outline-offset: 2px; }
   .track { height: 74px; }
   .title { margin-top: 6px; }
   .sign { padding-block: 8px 10px; }
-  .play { gap: 9px; }
+  .puzzle, .controls { gap: 9px; }
+  .controls { padding-top: 9px; }
+}
+
+/* landscape phones and tablets: sizes follow the viewport height */
+@media (orientation: landscape) and (min-width: 540px) {
+  .app {
+    max-width: 1180px;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr auto auto 1fr;
+    grid-template-areas: "sign sign" "stripe stripe" ". controls" "track controls" "puzzle controls" ". controls";
+  }
+  .sign {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "title bullets tools";
+    padding-block: clamp(6px, 1.5dvh, 14px);
+  }
+  .bullets { justify-self: end; }
+  .title { margin: 0; }
+  .title-small { font-size: clamp(22px, 6dvh, 34px); }
+  .title-big { font-size: clamp(18px, 5dvh, 28px); }
+
+  .track { margin-right: 12px; }
+  .puzzle { padding-right: 12px; padding-bottom: 12px; }
+  .controls { padding-left: 12px; justify-content: center; gap: clamp(8px, 2dvh, 16px); }
+  .stats { margin-top: 0; }
+
+  .hs-label { font-size: clamp(13px, 2.2dvh, 17px); }
+  .digit { height: clamp(48px, 15dvh, 140px); font-size: clamp(32px, 10dvh, 88px); }
+  .board { padding: clamp(8px, 2dvh, 18px) 14px; }
+  .led { font-size: clamp(20px, 5dvh, 40px); }
+  .key { height: clamp(40px, 11.5dvh, 84px); font-size: clamp(20px, 4dvh, 30px); }
+  .k-fn { font-size: clamp(15px, 2.6dvh, 20px); }
+  .k-digit { font-size: clamp(24px, 4.6dvh, 34px); }
+  .btn { height: clamp(40px, 11.5dvh, 64px); }
 }

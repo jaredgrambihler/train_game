@@ -19,24 +19,25 @@
 </head>
 <body>
 <!--APP-->
-<div class="app" id="app">
+<main class="app" id="app">
   <header class="sign">
-    <div class="sign-row">
-      <div class="bullets" aria-hidden="true">
-        <i style="--c:#C60C30"></i><i style="--c:#00A1DE"></i><i style="--c:#62361B"></i><i style="--c:#009B3A"></i><i style="--c:#F9461C"></i><i style="--c:#E27EA6"></i><i style="--c:#522398"></i><i style="--c:#F9E300"></i>
-      </div>
-      <div class="sign-tools">
-        <button class="icon-btn" id="soundBtn" type="button" aria-label="Sound on" aria-pressed="true">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9h4l5-4v14l-5-4H4z"/><path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="mute" d="M16 9l5 6M21 9l-5 6"/></svg>
-        </button>
-        <button class="icon-btn" id="helpBtn" type="button" aria-label="How to play">?</button>
-      </div>
+    <div class="bullets" aria-hidden="true">
+      <i style="--c:#C60C30"></i><i style="--c:#00A1DE"></i><i style="--c:#62361B"></i><i style="--c:#009B3A"></i><i style="--c:#F9461C"></i><i style="--c:#E27EA6"></i><i style="--c:#522398"></i><i style="--c:#F9E300"></i>
+    </div>
+    <div class="sign-tools">
+      <button class="icon-btn" id="soundBtn" type="button" aria-label="Sound on" aria-pressed="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9h4l5-4v14l-5-4H4z"/><path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="mute" d="M16 9l5 6M21 9l-5 6"/></svg>
+      </button>
+      <button class="icon-btn" id="helpBtn" type="button" aria-label="How to play">?</button>
     </div>
     <h1 class="title"><span class="title-small">Next stop</span><span class="title-big">10</span></h1>
   </header>
 
   <div class="stripe">
-    <span class="stripe-line"><b id="lineName">Red</b> Line</span>
+    <label class="line-pick">
+      <select id="lineSelect" aria-label="Line"></select>
+      <svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5"/></svg>
+    </label>
     <span class="stripe-stop" id="stopCount">Stop 1 of 19</span>
   </div>
 
@@ -60,7 +61,7 @@
     </div>
   </section>
 
-  <main class="play">
+  <div class="puzzle">
     <section class="headsign" aria-labelledby="hsLabel">
       <p class="hs-label" id="hsLabel">Make 10 with these digits, in order</p>
       <div class="digits" id="digits"></div>
@@ -73,7 +74,9 @@
         <span class="msg" id="msg" role="status"></span>
       </div>
     </section>
+  </div>
 
+  <div class="controls">
     <section class="keypad" id="keypad" aria-label="Keypad">
       <button type="button" class="key k-paren" data-tok="(">(</button>
       <button type="button" class="key k-paren" data-tok=")">)</button>
@@ -102,8 +105,8 @@
       <span>Best <b id="best">0</b></span>
       <span>Stops ridden <b id="rides">0</b></span>
     </footer>
-  </main>
-</div>
+  </div>
+</main>
 
 <dialog class="help" id="help" aria-labelledby="helpTitle">
   <h2 id="helpTitle">How to ride</h2>

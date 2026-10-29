@@ -1,13 +1,13 @@
 import { newPuzzle } from './solver.js';
 import { checkAnswer } from './parser.js';
-import { stopAt } from './stations.js';
+import { LINES, lineStart, stopAt } from './stations.js';
 
 const $ = (id) => document.getElementById(id);
 const els = {
   app: $('app'), digits: $('digits'), expr: $('expr'), value: $('value'), msg: $('msg'),
   keypad: $('keypad'), nextKey: $('nextKey'), check: $('checkBtn'), reveal: $('revealBtn'),
   newBtn: $('newBtn'), train: $('train'), help: $('help'), helpBtn: $('helpBtn'), sound: $('soundBtn'),
-  lineName: $('lineName'), stopCount: $('stopCount'), prev: $('prevStop'), now: $('nowStop'), next: $('nextStop'),
+  line: $('lineSelect'), stopCount: $('stopCount'), prev: $('prevStop'), now: $('nowStop'), next: $('nextStop'),
   streak: $('streak'), best: $('best'), rides: $('rides'),
 };
 
@@ -57,7 +57,7 @@ function renderStop() {
   els.app.style.setProperty('--line', s.line.color);
   els.app.style.setProperty('--on-line', s.line.on);
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', s.line.color);
-  els.lineName.textContent = s.line.name;
+  els.line.value = String(s.lineIndex);
   els.stopCount.textContent = `Stop ${s.index + 1} of ${s.length}`;
   els.prev.textContent = s.prev ?? '';
   els.now.textContent = s.station;
@@ -261,7 +261,18 @@ function renderSound() {
   els.sound.setAttribute('aria-label', state.muted ? 'Sound off' : 'Sound on');
 }
 
+// Switching lines keeps the puzzle in progress, so it can't be used to skip one.
+function changeLine() {
+  if (state.busy) { renderStop(); return; }
+  state.pos = lineStart(Number(els.line.value));
+  save();
+  renderStop();
+  arrive();
+}
+
 // ---------- wiring ----------
+els.line.append(...LINES.map((l, i) => new Option(`${l.name} Line`, String(i))));
+els.line.addEventListener('change', changeLine);
 els.keypad.addEventListener('click', (e) => {
   const b = e.target.closest('button');
   if (!b || b.disabled) return;
@@ -284,7 +295,7 @@ els.helpBtn.addEventListener('click', openHelp);
 els.help.addEventListener('close', () => { state.seenHelp = true; save(); });
 
 document.addEventListener('keydown', (e) => {
-  if (els.help.open || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (els.help.open || e.target === els.line || e.metaKey || e.ctrlKey || e.altKey) return;
   const k = e.key;
   const last = state.tokens[state.tokens.length - 1];
   if (/^\d$/.test(k)) insert(k);

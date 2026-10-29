@@ -1,6 +1,6 @@
 // Offline support. Bump VERSION whenever you deploy changes so phones
 // pick up the new files.
-const VERSION = 'nextstop10-v3';
+const VERSION = 'nextstop10-v4';
 const ASSETS = [
   './', './index.html', './css/style.css',
   './js/app.js', './js/solver.js', './js/parser.js', './js/rational.js', './js/stations.js',

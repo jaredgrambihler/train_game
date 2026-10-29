@@ -14,11 +14,14 @@ export const LINES = [
 
 const ROUTE = LINES.flatMap((line, li) => line.stops.map((stop, si) => ({ li, si })));
 
+export const lineStart = (li) => ROUTE.findIndex((r) => r.li === li);
+
 export function stopAt(pos) {
   const { li, si } = ROUTE[((pos % ROUTE.length) + ROUTE.length) % ROUTE.length];
   const line = LINES[li];
   return {
     line,
+    lineIndex: li,
     station: line.stops[si],
     prev: line.stops[si - 1] ?? null,
     next: line.stops[si + 1] ?? null,

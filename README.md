@@ -1,7 +1,8 @@
 # Next Stop: 10
 
-A Chicago "L" themed number puzzle for phones. You get four digits; keep them
-in order and add operators to make exactly 10.
+A Chicago "L" themed number puzzle for phones and tablets, in portrait or
+landscape. You get four digits; keep them in order and add operators to make
+exactly 10. Pick any line from the menu at the top to ride it from its first stop.
 
 `2 2 4 2` → `2 + 2 + 4 + 2` or `2 × 2 + 4 + 2`
 `1 4 2 9` → `1 % 42 + 9`
